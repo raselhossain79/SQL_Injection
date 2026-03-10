@@ -11,7 +11,7 @@ SQL Injection
 │     ├─ Table Enumeration
 │     └─ Data Extraction
 │
-├─ 4. Error-Based SQL Injection
+├─ 4. Error-Based SQL Injection ✅ 
 │
 ├─ 5. Blind SQL Injection
 │     ├─ Boolean-Based Blind SQLi
@@ -24,4 +24,6 @@ SQL Injection
 │     └─ Keyword splitting
 │
 └─ 7. Automated SQL Injection
-      └─ sqlmap
+│     └─ sqlmap
+│
+└─ 8. Remediation 
