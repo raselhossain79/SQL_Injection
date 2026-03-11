@@ -3,7 +3,8 @@ SQL Injection
 ├─ 1. Authentication Bypass ✅
 │
 ├─ 2. Enumeration
-│     └─ Column Count Detection (ORDER BY) ✅
+│     ├─ Column Count Detection (ORDER BY / NULL) ✅
+│     └─ Database Version Detection
 │
 ├─ 3. UNION-Based SQL Injection ✅
 │     ├─ Output Column Discovery
@@ -11,19 +12,29 @@ SQL Injection
 │     ├─ Table Enumeration
 │     └─ Data Extraction
 │
-├─ 4. Error-Based SQL Injection ✅ 
+├─ 4. Error-Based SQL Injection ✅
+│     ├─ extractvalue()
+│     ├─ updatexml()
+│     ├─ LIMIT enumeration
+│     └─ GROUP_CONCAT extraction
 │
 ├─ 5. Blind SQL Injection
 │     ├─ Boolean-Based Blind SQLi
+│     ├─ Conditional Errors
 │     └─ Time-Based Blind SQLi
 │
-├─ 6. WAF / Filter Bypass
-│     ├─ Comments
+├─ 6. Filter / WAF Bypass
+│     ├─ SQL comments
 │     ├─ Case variation
 │     ├─ Encoding
-│     └─ Keyword splitting
+│     ├─ Keyword splitting
+│     └─ Alternative operators
 │
-└─ 7. Automated SQL Injection
+├─ 7. Automation
 │     └─ sqlmap
 │
-└─ 8. Remediation 
+└─ 8. Remediation / Prevention
+      ├─ Prepared Statements
+      ├─ Parameterized Queries
+      ├─ Input Validation
+      └─ Least Privilege DB User
