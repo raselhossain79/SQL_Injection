@@ -19,7 +19,7 @@ SQL Injection
 │     └─ GROUP_CONCAT extraction
 │
 ├─ 5. Blind SQL Injection
-│     ├─ Boolean-Based Blind SQLi
+│     ├─ Boolean-Based Blind SQLi ✅
 │     ├─ Conditional Errors
 │     └─ Time-Based Blind SQLi
 │
