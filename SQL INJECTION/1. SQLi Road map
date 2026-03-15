@@ -20,7 +20,7 @@ SQL Injection
 │
 ├─ 5. Blind SQL Injection
 │     ├─ Boolean-Based Blind SQLi ✅
-│     ├─ Conditional Errors
+│     ├─ Conditional Errors ✅
 │     └─ Time-Based Blind SQLi
 │
 ├─ 6. Filter / WAF Bypass
